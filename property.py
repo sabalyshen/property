@@ -1,3 +1,5 @@
+import os
+import shutil #移動檔案用
 
 #讀取檔案
 from openpyxl import load_workbook
@@ -17,14 +19,13 @@ wb4 = load_workbook(filename = '財產work.xlsx', data_only=True)
 ws4 = wb4['Sheet1']
 
 name = []
-
-with open('name.csv', 'r') as f:
+with open('name.txt', 'r', encoding = 'utf8') as f:
     for n in f:
         n = n.replace('\n', '')
         name.append(n)
         print(n)
 
-def find_name(list):
+def find_item(list):
     for l in list:
         wb2.save(filename = l +'物品.xlsx')
         from openpyxl import load_workbook
@@ -41,10 +42,8 @@ def find_name(list):
             else:
                 continue
         wb5.save(filename = l +'物品.xlsx')
-        
-
-        
-def find_name2(list):
+               
+def find_property(list):
     for l in list:
         wb4.save(filename = l +'財產.xlsx')
         from openpyxl import load_workbook
@@ -62,5 +61,22 @@ def find_name2(list):
                 continue
         wb6.save(filename = l +'財產.xlsx')
 
-find_name(name)                
+while True:
+    input_item = input('列印財產或是物品: (財產 = 1， 物品 = 2)')
+    if input_item == '2':
+        i = name
+        find_item(i)
+    elif input_item == '1':
+        p = name
+        find_property(p)
+    else:
+        break
 
+source = r'C:\Users\sabal\Desktop\python'
+destination = r'C:\Users\sabal\Desktop\python\物品'
+files = os.listdir(source)        
+for file in os.listdir('.'): # '.'代表現在資料夾的位子
+    if file.endswith('物品.xlsx'):
+        new_path = shutil.move(f"{source}/{file}", destination)
+    elif file.endswith('財產.xlsx'):
+        new_path = shutil.move(f"{source}/{file}", destination) 
